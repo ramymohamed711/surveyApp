@@ -5,4 +5,3 @@ Survey application consists of two parts, the first part for the application's a
 DB link: https://mlab.com/databases/survey572
 
 Connection string: mongodb://<dbuser>:<dbpassword>@ds125068.mlab.com:25068/survey572
-
