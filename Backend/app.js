@@ -31,9 +31,9 @@ app.use((req,res,next)=> {
         next();
     }
     else {
-        mongoClient.connect("mongodb:// ramymwp:ramymwp @ds125068.mlab.com:25068/survey572", (err, client) => {
+        mongoClient.connect("mongodb://ramymwp:ramymwp@ds125068.mlab.com:25068/survey572", (err, client) => {
             if (err) throw new Error('Can\'t connect to survey database');
-            db = client.db('ramy');
+            db = client.db('survey572');
             req.db = db;
             next();
         });
