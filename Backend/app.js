@@ -54,6 +54,7 @@ app.use((req, res, next) => {
             if (err) throw new Error('Can\'t connect to survey database');
             db = client.db('survey572');
             req.col = db.collection('survey');
+            req.userCol = db.collection('users');
             next();
         });
     }

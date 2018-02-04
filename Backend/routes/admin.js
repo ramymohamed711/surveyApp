@@ -3,7 +3,7 @@ var express = require('express');
 var { jwt, auth, passport, jwtOptions, md5 } = require('../services/login')
 var router = express.Router();
 
-router.use(passport.initialize());
+//router.use(passport.initialize());
 router.post("/login", function (req, res) {
   if (req.body.name && req.body.password) {
     var name = req.body.name;
@@ -11,15 +11,17 @@ router.post("/login", function (req, res) {
   }
   // usually this would be a database call:
   const promise = new Promise(function (resolve, reject) {
-    req.col.findOne({ 'userName': name },function (err, doc) {
+    console.log(name + " --- " + password)
+    req.userCol.findOne({'userName': name},function(err, doc) {
       if (err) throw err
+      console.log(doc)
       resolve(doc)
     })
   })
 
 
-  var user = promise.then(user=>console.log(user))
-    
+  var user = promise.then(user=>{
+    console.log(user.password + " EEE " + md5(md5(password)))
     if (!user) {
       res.status(401).json({ message: "no such user found" });
     }
@@ -33,12 +35,8 @@ router.post("/login", function (req, res) {
       res.status(401).json({ message: "passwords did not match" });
     }
   })
-
-
-
-
-
-
+  })
+    
 router.use(auth);
 
 module.exports = router;
