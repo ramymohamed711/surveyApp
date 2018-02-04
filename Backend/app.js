@@ -7,9 +7,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-// const mongoClient = require('mongodb').MongoClient;
+const mongoClient = require('mongodb').MongoClient;
 
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 const passport = require('passport');
 var configDB = require('./config/database.js');
 
@@ -31,55 +31,54 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 // required for passport
-app.use(session({ secret: 'welcometoourproject' })); // session secret
+app.use(session({secret: 'welcometoourproject'})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+// routes ======================================================================
+// require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
 let db = null;
-app.use((req,res,next)=> {
+// connect to our database
+app.use((req, res, next) => {
     "use strict";
     if (db) {
         req.db = db;
         next();
     }
     else {
-        // connect to our database
-        mongoose.connect(configDB.url, (err, client) => {
+        mongoClient.connect(configDB.url, (err, client) => {
             if (err) throw new Error('Can\'t connect to survey database');
             db = client.db('survey572');
             req.db = db;
             next();
-
-        // mongoClient.connect("mongodb://ramymwp:ramymwp@ds125068.mlab.com:25068/survey572", (err, client) => {
-        //     if (err) throw new Error('Can\'t connect to survey database');
-        //     db = client.db('survey572');
-        //     req.db = db;
-        //     next();
         });
     }
 });
+
 app.use('/', index);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
+
 
 app.listen(port);
 console.log('The magic happens on port ' + port);
