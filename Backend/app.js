@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -64,7 +63,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/admin',admin);
+app.use('/admin',admin)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

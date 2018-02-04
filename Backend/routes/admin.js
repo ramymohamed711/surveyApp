@@ -1,15 +1,44 @@
 var express = require('express');
+
+var { jwt, auth, passport, jwtOptions, md5 } = require('../services/login')
 var router = express.Router();
 
-function checkAuthentication(req,res){
-  console.log("passed here ")
-  next()
+router.use(passport.initialize());
+router.post("/login", function (req, res) {
+  if (req.body.name && req.body.password) {
+    var name = req.body.name;
+    var password = req.body.password;
+  }
+  // usually this would be a database call:
+  const promise = new Promise(function (resolve, reject) {
+    req.col.findOne({ 'userName': name },function (err, doc) {
+      if (err) throw err
+      resolve(doc)
+    })
+  })
 
-}
 
-/* GET users listing. */
-router.get('/',checkAuthentication, function(req, res, next) {
-  res.send('respond with a resource');
-});
+  var user = promise.then(user=>console.log(user))
+    
+    if (!user) {
+      res.status(401).json({ message: "no such user found" });
+    }
+
+    if (user.password === md5(md5(password))) {
+      // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+      var payload = { id: user.userID };
+      var token = jwt.sign(payload, jwtOptions.secretOrKey);
+      res.json({ message: "ok", token: token });
+    } else {
+      res.status(401).json({ message: "passwords did not match" });
+    }
+  })
+
+
+
+
+
+
+router.use(auth);
 
 module.exports = router;
