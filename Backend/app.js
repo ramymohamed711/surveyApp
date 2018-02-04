@@ -16,7 +16,7 @@ var configDB = require('./config/database.js');
 // configuration ===============================================================
 // require('./config/passport')(passport); // pass passport for configuration
 
-var index = require('./routes/index');
+var client = require('./routes/client');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
 var app = express();
@@ -44,25 +44,24 @@ app.use(passport.session()); // persistent login sessions
 let db = null;
 // connect to our database using mongo client
 app.use((req, res, next) => {
-    "use strict";
     if (db) {
-        req.db = db;
+        req.col = db.collection('survey');
         console.log(db)
         next();
-        
+
     }
     else {
         mongoClient.connect(configDB.url, (err, client) => {
             if (err) throw new Error('Can\'t connect to survey database');
             db = client.db('survey572');
-            req.db = db;
+            req.col = db.collection('survey');
             next();
         });
     }
 });
 
 
-app.use('/', index);
+app.use('/', client);
 app.use('/users', users);
 app.use('/admin',admin);
 
