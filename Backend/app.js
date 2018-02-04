@@ -40,19 +40,21 @@ app.use(passport.session()); // persistent login sessions
 // routes ======================================================================
 // require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-let db = null;
 // connect to our database using mongo client
+let db = null;
 app.use((req, res, next) => {
     "use strict";
     if (db) {
-        req.db = db;
+        req.col = db.collection('survey');
+        // console.log("its there");
         next();
     }
     else {
         mongoClient.connect(configDB.url, (err, client) => {
             if (err) throw new Error('Can\'t connect to survey database');
             db = client.db('survey572');
-            req.db = db;
+            req.col = db.collection('survey');
+            // console.log(db);
             next();
         });
     }
