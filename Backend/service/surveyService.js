@@ -2,14 +2,13 @@
 const survey = require('../model/Survey');
 
 let obj = {
-    getAllSurvey,
+    getAllSurveys,
     getSurveyByID,
-    getAllQuestions,
     addSuggestedAnswer,
-
+    deleteProperty
 }
 
-function getAllSurvey(req) {
+function getAllSurveys(req) {
     return new Promise((resolve, reject) => {
         req.col.find({}).toArray((err, data) => {
             if (err) reject(err);
@@ -19,7 +18,6 @@ function getAllSurvey(req) {
 }
 
 function getSurveyByID(req, id) {
-    console.log(id);
     return new Promise((resolve, rej) => {
         req.col.findOne({survey_id: id}, (err, data) => {
             if (err) rej(err);
@@ -28,22 +26,28 @@ function getSurveyByID(req, id) {
     });
 }
 
-function getAllQuestions(req) {
-    req.col.findOne({}, (err, data) => {
-        if (err) throw err;
-        console.log(data);
-        return data;
-    })
-}
-
-// {$addToSet: {suggested_answers: req.body.suggestedAnswer}},
 function addSuggestedAnswer(req, id, quesId) {
     return new Promise((resolve, reject) => {
-        req.col.findOne({ survey_id: id, question_id : quesId},  (err, data) => {
+        let query = {survey_id: id, 'questions.question_id': quesId};
+        let operation = {$addToSet: {'questions.$.suggested_answers': req.body.suggestedAnswer}};
+        let sort = [];
+        let options = {new: true};
+        req.col.findAndModify(query, sort, operation, options, (err, data) => {
             if (err) reject(err);
             resolve(data);
         })
-    })
+    });
 }
+
+function deleteProperty(req) {
+    return new Promise((resolve, reject) => {
+        req.col.update(
+            {survey_id: 1}, {$unset: {"questions[5]": ""}}, (err, data) => {
+                if (err) reject(err);
+                resolve(data);
+            })
+    });
+}
+
 
 module.exports = obj;

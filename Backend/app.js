@@ -32,14 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-// required for passport
-app.use(session({secret: 'welcometoourproject'})); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-
-// routes ======================================================================
-// require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+app.use(bodyParser.urlencoded({extended: true}));
 
 let db = null;
 // connect to our database using mongo client
