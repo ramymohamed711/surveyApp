@@ -18,6 +18,7 @@ var configDB = require('./config/database.js');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 var app = express();
 var port = process.env.PORT || 8080;
 
@@ -46,7 +47,9 @@ app.use((req, res, next) => {
     "use strict";
     if (db) {
         req.db = db;
+        console.log(db)
         next();
+        
     }
     else {
         mongoClient.connect(configDB.url, (err, client) => {
@@ -61,6 +64,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/admin',admin);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
