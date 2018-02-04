@@ -41,7 +41,7 @@ app.use(passport.session()); // persistent login sessions
 // require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 let db = null;
-// connect to our database
+// connect to our database using mongo client
 app.use((req, res, next) => {
     "use strict";
     if (db) {
@@ -57,6 +57,7 @@ app.use((req, res, next) => {
         });
     }
 });
+
 
 app.use('/', index);
 app.use('/users', users);
