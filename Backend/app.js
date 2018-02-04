@@ -14,13 +14,10 @@ const passport = require('passport');
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
 // require('./config/passport')(passport); // pass passport for configuration
-
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-
 var app = express();
 var port = process.env.PORT || 8080;
 
@@ -35,29 +32,34 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 // required for passport
 app.use(session({ secret: 'welcometoourproject' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-// let db = null;
-// app.use((req,res,next)=> {
-//     "use strict";
-//     if (db) {
-//         req.db = db;
-//         next();
-//     }
-//     else {
-//         mongoClient.connect("mongodb://ramymwp:ramymwp@ds125068.mlab.com:25068/survey572", (err, client) => {
-//             if (err) throw new Error('Can\'t connect to survey database');
-//             db = client.db('survey572');
-//             req.db = db;
-//             next();
-//         });
-//     }
-// });
+let db = null;
+app.use((req,res,next)=> {
+    "use strict";
+    if (db) {
+        req.db = db;
+        next();
+    }
+    else {
+        // connect to our database
+        mongoose.connect(configDB.url, (err, client) => {
+            if (err) throw new Error('Can\'t connect to survey database');
+            db = client.db('survey572');
+            req.db = db;
+            next();
 
+        // mongoClient.connect("mongodb://ramymwp:ramymwp@ds125068.mlab.com:25068/survey572", (err, client) => {
+        //     if (err) throw new Error('Can\'t connect to survey database');
+        //     db = client.db('survey572');
+        //     req.db = db;
+        //     next();
+        });
+    }
+});
 app.use('/', index);
 app.use('/users', users);
 
