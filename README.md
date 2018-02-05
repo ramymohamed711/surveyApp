@@ -14,11 +14,11 @@ questions:[
     question_title:"Question 1",
     question_type:1,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+    answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:["Sug-Answer1" , "Sug-Answer2"]
 },
 {
@@ -26,11 +26,11 @@ questions:[
     question_title:"Question 2",
     question_type:3,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+     answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:[]
 },
 {
@@ -38,11 +38,11 @@ questions:[
     question_title:"Question 3",
     question_type:1,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+     answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:[]
 }
 ],
