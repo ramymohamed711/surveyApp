@@ -14,11 +14,11 @@ questions:[
     question_title:"Question 1",
     question_type:1,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+    answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:["Sug-Answer1" , "Sug-Answer2"]
 },
 {
@@ -26,11 +26,11 @@ questions:[
     question_title:"Question 2",
     question_type:3,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+     answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:[]
 },
 {
@@ -38,18 +38,18 @@ questions:[
     question_title:"Question 3",
     question_type:1,
     question_img:"",
-    answers:[
-        {answer:"Answer1",counter:0},
-        {answer:"Answer2",counter:0},
-        {answer:"Answer3",counter:0},
-    ],
+     answers:{
+        "answer1":{answer:"Answer1",counter:0},
+        "answer2":{answer:"Answer2",counter:0},
+        "answer3":{answer:"Answer3",counter:0},
+    },
     suggested_answers:[]
 }
 ],
 survey_statDate: 10/10/2020,
 survey_endDate: 10/15/2020,
 survey_status: 1,
-survey_link: "localhost:8080/Backend/survery/1"
+survey_link: "localhost:8080/Backend/survery/1",
 qrCode: "localhost:8080/surveys/1.png"
 });
 
