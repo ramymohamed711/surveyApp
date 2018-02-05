@@ -1,6 +1,6 @@
 var express = require('express');
 
-var { jwt, auth, passport, jwtOptions, md5 } = require('../services/login')
+var { jwt, auth, passport, jwtOptions, md5 } = require('../service/login')
 var router = express.Router();
 
 //router.use(passport.initialize());
@@ -36,7 +36,7 @@ router.post("/login", function (req, res) {
     }
   })
   })
-    
+
 router.use(auth);
 
 module.exports = router;

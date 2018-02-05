@@ -49,7 +49,7 @@ questions:[
 survey_statDate: 10/10/2020,
 survey_endDate: 10/15/2020,
 survey_status: 1,
-survey_link: "localhost:8080/Backend/survery/1"
+survey_link: "localhost:8080/Backend/survery/1",
 qrCode: "localhost:8080/surveys/1.png"
 });
 

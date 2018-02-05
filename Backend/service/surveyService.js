@@ -1,12 +1,14 @@
 "use strict";
 const survey = require('../model/Survey');
+var mad = require('mongo-aggregation-debugger')();
 
 let obj = {
     getAllSurveys,
-    getSurveyByID,
+    // submitSurvey,
     addSuggestedAnswer,
-    deleteProperty
+    updateAnswersCounters
 }
+
 
 function getAllSurveys(req) {
     return new Promise((resolve, reject) => {
@@ -17,37 +19,102 @@ function getAllSurveys(req) {
     });
 }
 
-function getSurveyByID(req, id) {
-    return new Promise((resolve, rej) => {
-        req.col.findOne({survey_id: id}, (err, data) => {
-            if (err) rej(err);
-            resolve(data);
-        })
-    });
-}
+// function submitSurvey(req) {
+//     Promise.all([
+//         updateAnswersCounters(req), addSuggestedAnswer(req)
+//     ]);
+// }
 
-function addSuggestedAnswer(req, id, quesId) {
+function getSurveyByID(req) {
+    // console.log(parseInt(req.params['id']));
+    // console.log(id);
     return new Promise((resolve, reject) => {
-        let query = {survey_id: id, 'questions.question_id': quesId};
-        let operation = {$addToSet: {'questions.$.suggested_answers': req.body.suggestedAnswer}};
-        let sort = [];
-        let options = {new: true};
-        req.col.findAndModify(query, sort, operation, options, (err, data) => {
+        req.col.findOne({survey_id: parseInt(req.params['id'])}, (err, doc) => {
             if (err) reject(err);
-            resolve(data);
+            resolve(doc);
+        });
+    });
+}
+
+function addSuggestedAnswer(req) {
+    return new Promise((resolve, reject) => {
+        // let surveyID = parseInt(req.body.surveyID), quesId = parseInt(req.body.quesID);
+        let query = {survey_id: parseInt(req.body.surveyID), 'questions.question_id': parseInt(req.body.quesID)};
+        let sort = [];
+        let operation = {$addToSet: {'questions.$.suggested_answers': req.body.suggestedAnswer}};
+        let options = {new: true};
+        req.col.findAndModify(query, sort, operation, options, (err, doc) => {
+            if (err) reject(err);
+            resolve(doc);
         })
     });
 }
 
-function deleteProperty(req) {
+function updateAnswersCounters(req) {
     return new Promise((resolve, reject) => {
-        req.col.update(
-            {survey_id: 1}, {$unset: {"questions[5]": ""}}, (err, data) => {
+        let myAns = req.body.myAnswer;
+        let quesID = parseInt(req.body.quesID);
+        let servID = parseInt(req.body.surveyID);
+
+        let query = {
+            survey_id: servID,
+            'questions.question_id': quesID
+        };
+
+        for (let ans of myAns) {
+            console.log(ans);
+            let sort = [];
+            let key = 'questions.$.answers.' + ans + '.counter';
+            let inc = {};
+            inc[key] = 1;
+
+            let operation = ({$inc: inc});
+            let options = {new: true, multi: true};
+            req.col.findAndModify(query, sort, operation, options, (err, doc) => {
                 if (err) reject(err);
-                resolve(data);
-            })
+                resolve(doc);
+            });
+        }
+
     });
 }
 
+function removeSuggestedFromBack(req) {
+    return new Promise((resolve, reject) => {
+        // let surveyID = parseInt(req.body.surveyID), quesId = parseInt(req.body.quesID);
+        let query = {survey_id: parseInt(req.body.surveyID), 'questions.question_id': parseInt(req.body.quesID)};
+        let sort = [];
+        let operation = {$pop: {'questions.$.suggested_answers': 1}};
+        let options = {new: true};
+        req.col.findAndModify(query, sort, operation, options, (err, doc) => {
+            if (err) reject(err);
+            resolve(doc);
+        });
+    });
+}
+
+function removeSuggestedFromFront(req) {
+    return new Promise((resolve, reject) => {
+        // let surveyID = parseInt(req.body.surveyID), quesId = parseInt(req.body.quesID);
+        let query = {survey_id: parseInt(req.body.surveyID), 'questions.question_id': parseInt(req.body.quesID)};
+        let sort = [];
+        let operation = {$pop: {'questions.$.suggested_answers': -1}};
+        let options = {new: true};
+        req.col.findAndModify(query, sort, operation, options, (err, doc) => {
+            if (err) reject(err);
+            resolve(doc);
+        });
+    });
+}
+
+//helper methods
+function deleteProperty(req, prop) {
+    return new Promise((resolve, reject) => {
+        req.col.update({survey_id: parseInt(req.body.id)}, {$unset: {prop: 1}}, (err, doc) => {
+            if (err) reject(err);
+            resolve(doc);
+        })
+    });
+}
 
 module.exports = obj;
