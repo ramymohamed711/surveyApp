@@ -24,7 +24,7 @@ import { AuthserviceService } from './authservice.service';
 const MY_ROUTS = [
   {path:'' , redirectTo:'home', pathMatch:'full' } , 
   {path:'home' , component: HomeComponent,canActivate:[AuthGuard] }, 
-  {path:'login' , component: LoginComponent }, 
+  {path:'login' , component: LoginComponent,canActivate:[RedirectGuard] }, 
   {path:'addsurvey', component: AddsurveyComponent,canActivate:[AuthGuard] },
   {path:'surveys', component: ShowsurveysComponent,canActivate:[AuthGuard] },
   {path:'survey/:id', component: SurveyComponent , canActivate:[AuthGuard] },
@@ -51,6 +51,7 @@ const MY_ROUTS = [
   ],
   providers: [AuthGuard,
     AuthserviceService,
+    RedirectGuard,
     {provide: HTTP_INTERCEPTORS, 
     useClass: MyHttpInterceptor, 
     multi: true 

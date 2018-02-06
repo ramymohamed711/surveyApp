@@ -7,13 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 const mongoClient = require('mongodb').MongoClient;
-
-// var mongoose = require('mongoose');
-const passport = require('passport');
 var configDB = require('./config/database.js');
-
-// configuration ===============================================================
-// require('./config/passport')(passport); // pass passport for configuration
 
 var client = require('./routes/client');
 var users = require('./routes/users');
@@ -64,7 +58,7 @@ app.use((req, res, next) => {
 
 app.use('/', client);
 app.use('/users', users);
-app.use('/admin',admin)
+app.use('/admin',admin);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

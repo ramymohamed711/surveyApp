@@ -16,5 +16,9 @@ import { Component } from '@angular/core';
 </div>`
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'app';
+  public mssg: string = 'Hiiiii';
+  onSubmit(form) {
+    console.log(form.value);
+  }
 }

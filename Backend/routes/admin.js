@@ -1,6 +1,7 @@
 var express = require('express');
 var rx = require('@reactivex/rxjs')
-var { jwt, auth, passport, jwtOptions, md5 } = require('../services/login')
+
+var { jwt, auth, passport, jwtOptions, md5 } = require('../service/login')
 var router = express.Router();
 
 //router.use(passport.initialize());
@@ -44,18 +45,19 @@ router.post("/login", function (req, res) {
 })
 
 //router.use(auth);
-router.get('/check/:token', function (req, res) {
-  if (auth(req, res))
-    console.log(req.params)
+router.options('/check/:token', function (req, res) {
+  console.log(auth(req,res))
+  if (auth(req, res)) 
+    res.status(200).json({ message: true })
+  else 
+    res.status(403).json({ message: false })
 })
 
 router.post('/survey/create', function (req, res) {
-  if (auth(req, res)) {
+  if (auth(req, res)) 
     res.status(200).json({ message: true })
-  }
   else
-    res.status(401).json({ message: "incorrect token pleas login" })
-
+    res.status(403).json({ message: "incorrect token pleas login" })
 })
 
 module.exports = router;

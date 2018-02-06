@@ -13,10 +13,10 @@ jwtOptions.secretOrKey = 'tasmanianDevil';
 
 
 //define the strategy of getting the user
-var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+var strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
   console.log('payload received', jwt_payload);
   // usually this would be a database call:
-  var user = users[_.findIndex(users, {id: jwt_payload.id})];
+  var user = users[_.findIndex(users, { id: jwt_payload.id })];
   if (user) {
     next(null, user);
   } else {
@@ -28,35 +28,26 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 passport.use(strategy);
 
 //Middleware of all other user actions, check the token
-const auth = function(req, res, next) {
+const auth = function (req, res, next) {
   // check header or url parameters or post parameters for token
-  console.log(req.headers.authorization)
-  var token = req.body.token || req.params.token ||req.query.token || req.headers.authorization;
-  console.log(token)
+  var token = req.body.token || req.params.token || req.query.token || req.headers.authorization;
+  let validate = false;
   // decode token
   if (token) {
     // verifies secret and checks exp
-    jwt.verify(token, jwtOptions.secretOrKey, function(err, decoded) {      
+    jwt.verify(token, jwtOptions.secretOrKey, function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        validate= false;
       } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
-        console.log(decoded)
-        // next(req);
-        res.send(decoded)
+        validate=  true
       }
     });
-  } else {
-    // if there is no token
-    // return an error
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
-    });
-  
+  } 
+  else {
+    console.log("No token")
+    validate = false;
   }
-  
+return validate;
 };
 
-module.exports = {jwt , auth, passport , jwtOptions , md5}
+module.exports = { jwt, auth, passport, jwtOptions, md5 }

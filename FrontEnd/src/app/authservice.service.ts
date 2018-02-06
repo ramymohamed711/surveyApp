@@ -4,14 +4,20 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class AuthserviceService {
   private token;
-  constructor(private http: HttpClient) { }
+  private validate = false;
+  constructor(private http: HttpClient ) { }
   Auth() {
-    if (localStorage.getItem('token'))
+    if (localStorage.getItem('token')){
       this.token = localStorage.getItem('token')
-    this.http.get('http://localhost:8080/admin/check/'+this.token)
-      .subscribe(res => console.log(res),
-      err => console.log(err['error']['message']))
-    return true
+      console.log(this.token)
+      this.http.options('http://localhost:8080/admin/check/'+this.token)
+       .subscribe(res => {console.log(res); this.validate = res['message']},
+       err => {console.log(err);this.validate=err['message']})
+
+       console.log(this.validate)
+    }
+    console.log(this.validate)
+    return this.validate
   }
 
 }

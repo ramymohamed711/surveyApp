@@ -39,7 +39,7 @@ export class LoginComponent {
       .subscribe(res =>{
         if(res.hasOwnProperty('token')){
           localStorage.setItem('token',res['token'])
-          this.router.navigateByUrl("/home", { skipLocationChange: true });
+          this.router.navigateByUrl("/home");
         }
       },
       err => console.log(err['error']['message']))

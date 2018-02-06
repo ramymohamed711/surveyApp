@@ -9,8 +9,10 @@ export class RedirectGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    console.log(this.auth.Auth())
-   
+    if (this.auth.Auth()) {
+      this.router.navigateByUrl('/home', { skipLocationChange: true })
+      return false;
+    }
     return true;
   }
 }
