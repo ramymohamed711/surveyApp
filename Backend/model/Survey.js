@@ -1,6 +1,6 @@
 class Survey {
     constructor(id, title, quesID, quesTitle, quesType, quesImg, {answer, ansCounter}, sDate, eDate, status, link, qrLink) {
-        this.obj._obj = {
+        this.obj = {
             survey_id: id,
             survey_title: title,
             questions:

@@ -4,8 +4,8 @@ const surveyService = require('../service/surveyService');
 "use strict";
 
 // get all the surveys
-router.get('/', (req, res, next) => {
-    surveyService.getAllSurveys(req)
+router.get('/:id', (req, res, next) => {
+    surveyService.getSurveyByID(req)
         .then(data => res.status(200).json({data: data}))
         .catch(err => console.log(err));
 });

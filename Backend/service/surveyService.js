@@ -3,6 +3,7 @@ const survey = require('../model/Survey');
 
 let obj = {
     getAllSurveys,
+    getSurveyByID,
     // submitSurvey,
     addSuggestedAnswer,
     updateAnswersCounters
@@ -61,7 +62,7 @@ function updateAnswersCounters(req) {
         };
 
         for (let ans of myAns) {
-            console.log(ans);
+            // console.log(ans);
             let sort = [];
             let key = 'questions.$.answers.' + ans + '.counter';
             let inc = {};

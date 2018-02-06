@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +17,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  public mssg: string = 'Hiiiii';
-  onSubmit(form) {
-    console.log(form.value);
-  }
 }

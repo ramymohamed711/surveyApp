@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+
 const mongoClient = require('mongodb').MongoClient;
 var configDB = require('./config/database.js');
 
@@ -56,7 +57,7 @@ app.use((req, res, next) => {
 
 
 
-app.use('/', client);
+app.use('/client', client);
 app.use('/users', users);
 app.use('/admin',admin);
 
