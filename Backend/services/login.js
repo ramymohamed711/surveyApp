@@ -30,9 +30,10 @@ passport.use(strategy);
 //Middleware of all other user actions, check the token
 const auth = function(req, res, next) {
   // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  console.log(req.headers.authorization)
+  var token = req.body.token || req.params.token ||req.query.token || req.headers.authorization;
   console.log(token)
- // decode token
+  // decode token
   if (token) {
     // verifies secret and checks exp
     jwt.verify(token, jwtOptions.secretOrKey, function(err, decoded) {      
@@ -42,21 +43,20 @@ const auth = function(req, res, next) {
         // if everything is good, save to request for use in other routes
         req.decoded = decoded;    
         console.log(decoded)
-        // next();
+        // next(req);
         res.send(decoded)
       }
     });
-
   } else {
-
     // if there is no token
     // return an error
     return res.status(403).send({ 
         success: false, 
         message: 'No token provided.' 
     });
-
+  
   }
+  
 };
 
 module.exports = {jwt , auth, passport , jwtOptions , md5}

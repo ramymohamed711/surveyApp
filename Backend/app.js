@@ -32,13 +32,20 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.set('trust proxy',true)
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization , Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
 
+    next();
+  });
 let db = null;
 // connect to our database using mongo client
 app.use((req, res, next) => {
     if (db) {
         req.col = db.collection('survey');
-        console.log(db)
+        req.userCol = db.collection('users');
         next();
 
     }
@@ -54,6 +61,7 @@ app.use((req, res, next) => {
 });
 
 
+
 app.use('/', client);
 app.use('/users', users);
 app.use('/admin',admin)
@@ -65,16 +73,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// error handler
-app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
 
 
 app.listen(port);
