@@ -1,5 +1,5 @@
 var express = require('express');
-var rx = require('@reactivex/rxjs')
+// var rx = require('@reactivex/rxjs');
 
 var { jwt, auth, passport, jwtOptions, md5 } = require('../service/login')
 var router = express.Router();

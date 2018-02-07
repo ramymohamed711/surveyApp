@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+
 const mongoClient = require('mongodb').MongoClient;
 var configDB = require('./config/database.js');
 
@@ -26,7 +27,9 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.set('trust proxy',true)
+app.set('trust proxy',true);
+
+// allow Access-Control-Allow-Origin
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization , Content-Type, Accept");
@@ -34,8 +37,9 @@ app.use(function(req, res, next) {
 
     next();
   });
-let db = null;
+
 // connect to our database using mongo client
+let db = null;
 app.use((req, res, next) => {
     if (db) {
         req.col = db.collection('survey');
@@ -57,8 +61,7 @@ app.use((req, res, next) => {
 });
 
 
-
-app.use('/', client);
+app.use('/client', client);
 app.use('/users', users);
 app.use('/admin',admin);
 

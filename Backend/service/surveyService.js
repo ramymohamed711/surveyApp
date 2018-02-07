@@ -1,9 +1,11 @@
 "use strict";
-const survey = require('../model/Survey');
+// const survey = require('../../FrontEnd/model/Survey');
 
 let obj = {
     getAllSurveys,
+    getSurveyByID,
     // submitSurvey,
+    updateAnswers,
     addSuggestedAnswer,
     updateAnswersCounters
 }
@@ -49,6 +51,34 @@ function addSuggestedAnswer(req) {
     });
 }
 
+function updateAnswers(req) {
+    return new Promise((resolve, reject) => {
+        let myAns = req.body.questions;
+        let servID = parseInt(req.body.survey);
+
+        let query = {
+            survey_id: servID
+        };
+        let key;
+        let sort = [];
+        let i = 0;
+        for (let ansID in myAns) {
+            key = 'questions.' + i + '.answers.' + myAns[ansID] + '.counter';
+            console.log(key);
+            i++;
+            let inc = {};
+            inc[key] = 1;
+
+            let operation = ({$inc: inc});
+            let options = {new: true, multi: true};
+            req.col.findAndModify(query, sort, operation, options, (err, doc) => {
+                if (err) reject(err);
+                resolve(doc);
+            });
+        }
+    });
+}
+
 function updateAnswersCounters(req) {
     return new Promise((resolve, reject) => {
         let myAns = req.body.myAnswer;
@@ -61,7 +91,7 @@ function updateAnswersCounters(req) {
         };
 
         for (let ans of myAns) {
-            console.log(ans);
+            // console.log(ans);
             let sort = [];
             let key = 'questions.$.answers.' + ans + '.counter';
             let inc = {};

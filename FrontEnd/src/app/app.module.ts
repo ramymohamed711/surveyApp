@@ -1,25 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule , EventEmitter } from '@angular/core';
 // use FormsModule Only when using Template Driven Forms
-import { FormsModule } from '@angular/forms';
 // use ReactiveFormsModule Only when using Template Driven Forms
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
-import {  NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import { Routes } from '@angular/router';
+import { NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import {FormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
 
-import { AppComponent } from './app.component';
 
-import { CreatSurveyComponent } from "./survey-forms/data-driven.component";
+import {AppComponent} from './app.component';
+
+import {CreatSurveyComponent} from "./survey-forms/data-driven.component";
 import {LoginComponent} from "./login/login.component"
-import { HttpClientModule } from '@angular/common/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MyHttpInterceptor } from './my-http-interceptor';
-import { HomeComponent } from './home/home.component';
-import { AddsurveyComponent } from './addsurvey/addsurvey.component';
-import { ShowsurveysComponent } from './showsurveys/showsurveys.component';
-import { SurveyComponent } from './survey/survey.component'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {MyHttpInterceptor} from './my-http-interceptor';
+import {HomeComponent} from './home/home.component';
+import {AddsurveyComponent} from './addsurvey/addsurvey.component';
+import {ShowsurveysComponent} from './showsurveys/showsurveys.component';
 import {AuthGuard} from './auth.guard'
 import {RedirectGuard} from './redirect.guard'
+
+import {KeysPipe} from './keys.pipe';
+import {ClientSurveyComponent} from "./client-survey/client-survey.component";
+import {SuccessComponent} from './success/success.component';
+
+import {MatRadioModule} from '@angular/material/radio';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+
 import { AuthserviceService } from './authservice.service';
 import {CrossserviceService} from './crossservice.service';
 
@@ -43,19 +52,22 @@ const MY_ROUTS = [
   {path:'login' , component: LoginComponent,canActivate:[RedirectGuard] }, 
   {path:'addsurvey', component: AddsurveyComponent,canActivate:[AuthGuard] },
   {path:'surveys', component: ShowsurveysComponent,canActivate:[AuthGuard] },
-  {path:'survey/:id', component: SurveyComponent , canActivate:[AuthGuard] },
+  {path: 'client/:id', component: ClientSurveyComponent},
   {path:'**' , redirectTo:'home' }
 ]
 
+
 @NgModule({
   declarations: [
-    AppComponent, 
+    AppComponent,
     CreatSurveyComponent,
     LoginComponent,
     HomeComponent,
     AddsurveyComponent,
     ShowsurveysComponent,
-    SurveyComponent,
+    ClientSurveyComponent,
+    KeysPipe,
+    SuccessComponent
   ],
   // to use Forms we must have FormsModule OR ReactiveFormsModule Here
   imports: [
@@ -75,7 +87,11 @@ const MY_ROUTS = [
      MatCardModule,
      MatTableModule,
      NgxQRCodeModule,
-    RouterModule.forRoot(MY_ROUTS)
+    RouterModule.forRoot(MY_ROUTS),
+    BrowserAnimationsModule,
+    MatRadioModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [AuthGuard,
     AuthserviceService,
@@ -88,4 +104,5 @@ const MY_ROUTS = [
 } ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
