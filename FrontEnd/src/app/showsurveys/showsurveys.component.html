@@ -1,3 +1,48 @@
-<p>
-  showsurveys works!
-</p>
+  <div style="padding:40px;">
+      <div>
+          <mat-icon (click)="allsurveys()">refresh</mat-icon>
+
+        <table id="customers">
+          <thead>
+              <th>
+                  Survey title
+                </th>
+                <th>
+                  start dat
+                </th>
+                <th>
+                  End date
+                </th>
+                <th>
+                  Status
+                </th>
+                <th>
+                    Link
+                  </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dataSource">
+              <td> {{data.survey_title}}</td>
+              <td> {{data.survey_statDate}}</td>
+              <td> {{data.survey_endDate}}</td>
+              <td> {{data.survey_status}}</td>
+              <td><div fxLayout="column">
+                  <ngx-qrcode 
+                    [qrc-element-type]="elementType" 
+                    [qrc-value] = "data.survey_link"
+                    qrc-class = "aclass"
+                    qrc-errorCorrectionLevel = "L">
+                    </ngx-qrcode>
+                
+              </div></td>
+            </tr>
+          </tbody>
+          
+        </table> 
+       
+        </div>
+      
+        
+  </div>
+  
+  

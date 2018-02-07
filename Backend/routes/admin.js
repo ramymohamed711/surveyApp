@@ -3,6 +3,8 @@ var rx = require('@reactivex/rxjs')
 
 var { jwt, auth, passport, jwtOptions, md5 } = require('../service/login')
 var router = express.Router();
+var {createsurvey} = require('../service/createsurvey')
+var SurveService = require('../service/surveyService')
 
 //router.use(passport.initialize());
 router.post("/login", function (req, res) {
@@ -45,19 +47,33 @@ router.post("/login", function (req, res) {
 })
 
 //router.use(auth);
-router.options('/check/:token', function (req, res) {
-  console.log(auth(req,res))
-  if (auth(req, res)) 
+router.get('/check/:token', function (req, res) {
+  if (auth(req, res))
     res.status(200).json({ message: true })
-  else 
+  else
     res.status(403).json({ message: false })
 })
 
+
 router.post('/survey/create', function (req, res) {
-  if (auth(req, res)) 
+  var survey;
+  if (auth(req, res)) {
+    createsurvey(req)
     res.status(200).json({ message: true })
+  }
   else
     res.status(403).json({ message: "incorrect token pleas login" })
+})
+
+router.get('/surveys',function(req,res){
+  if(auth(req,res)){
+    
+    SurveService.getAllSurveys(req)
+    .then(data=>res.status(200).json({data:data}))
+    .catch(err=>console.log(err))
+  }
+ else
+  res.status(403).json({ message: "incorrect token pleas login" })
 })
 
 module.exports = router;

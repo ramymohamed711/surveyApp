@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {
@@ -17,6 +17,7 @@ import { Route } from '@angular/compiler/src/core';
 })
 export class LoginComponent {
   myForm: FormGroup;
+  @Input('error') error;
   constructor(private formBuilder: FormBuilder, private http: HttpClient , private router:Router) {
     this.myForm = formBuilder.group({
       'userData': formBuilder.group({
@@ -42,7 +43,7 @@ export class LoginComponent {
           this.router.navigateByUrl("/home");
         }
       },
-      err => console.log(err['error']['message']))
+      err => this.error = err['error']['message'])
   }
 
 

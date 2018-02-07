@@ -40,6 +40,7 @@ app.use((req, res, next) => {
     if (db) {
         req.col = db.collection('survey');
         req.userCol = db.collection('users');
+        req.counter = db.collection('surveysCounter');
         next();
 
     }
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
             db = client.db('survey572');
             req.col = db.collection('survey');
             req.userCol = db.collection('users');
+            req.counter = db.collection('surveysCounter')
             next();
         });
     }

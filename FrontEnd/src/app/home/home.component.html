@@ -1,4 +1,15 @@
-<a [routerLink]="['addsurvey']">Add new survey</a>
+<mat-toolbar color="primary">
+            <span>Suryey system</span>
+            <div style="padding-left:85%;"> <a (click)="logout()"> Logout</a> </div>
+           </mat-toolbar>
+          
+<mat-tab-group color="primary">
+      <mat-tab  label="Create new survey"><app-addsurvey ></app-addsurvey></mat-tab>
+        
+       <mat-tab label="All surveys"><app-showsurveys></app-showsurveys></mat-tab>
 
-<a [routerLink]="['surveys']">Show surveys</a>
+      </mat-tab-group>
+
+      
+
 
