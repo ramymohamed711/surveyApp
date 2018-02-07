@@ -1,0 +1,53 @@
+<h1>Our Survey App</h1>
+<p>
+  client-survey works!
+</p>
+
+<form (ngSubmit)="onSubmit(f) " #f="ngForm">
+  <div>
+    <label>
+      {{surveyEdit.survey_title}}
+    </label><br>
+    <label>
+      Survey started in {{surveyEdit.survey_statDate | date}}
+    </label><br>
+    <label>
+      Survey ends in {{surveyEdit.survey_endDate | date}}
+    </label><br>
+  </div>
+
+  <fieldset>
+    <legend>Questions</legend>
+    <!--<ul>-->
+    <!--<li *ngFor="let ques of survey.questions; let i = index">-->
+    <!--{{ques.question_title}}<br>-->
+    <!--<ul>-->
+    <!--<li *ngFor="let ans of ques.answers | keys">-->
+    <!--<input type="radio" [value]="ans.answer"-->
+    <!--[(ngModel)]="ques.question_answer" name='ans{{i}}'/>-->
+    <!--{{ans}}-->
+    <!--</li>-->
+    <!--</ul>-->
+
+    <!--<br><br>-->
+    <!--<label for="suggested">Suggested Answer:</label>-->
+    <!--<input id="suggested" type="text" placeholder="suggest an answer"><br><br>-->
+    <!--<hr>-->
+    <!--</li>-->
+    <!--</ul>-->
+
+    <ul>
+      <li *ngFor="let ques of surveyEdit.questions; let i = index">
+        {{ques.question_title}}<br>
+        <ul>
+          <li *ngFor="let ans of ques.answers | keys; let j = index">
+            <input type="radio" required [value]="ans" name="answer{{i+1}}"
+                   [(ngModel)]="ques.question_answer">
+            {{ans}}
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+  </fieldset>
+</form>
