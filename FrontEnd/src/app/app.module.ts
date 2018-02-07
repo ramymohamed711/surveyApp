@@ -15,7 +15,6 @@ import {MyHttpInterceptor} from './my-http-interceptor';
 import {HomeComponent} from './home/home.component';
 import {AddsurveyComponent} from './addsurvey/addsurvey.component';
 import {ShowsurveysComponent} from './showsurveys/showsurveys.component';
-import {SurveyComponent} from './survey/survey.component'
 import {AuthGuard} from './auth.guard'
 import {RedirectGuard} from './redirect.guard'
 import {AuthserviceService} from './authservice.service';
@@ -23,6 +22,10 @@ import {ClientSurveyComponent} from "./client-survey/client-survey.component";
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatRadioModule} from '@angular/material/radio';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {KeysPipe} from './keys.pipe';
+import {SuccessComponent} from './success/success.component';
 
 const MY_ROUTS: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -30,10 +33,11 @@ const MY_ROUTS: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [RedirectGuard]},
   {path: 'addsurvey', component: AddsurveyComponent, canActivate: [AuthGuard]},
   {path: 'surveys', component: ShowsurveysComponent, canActivate: [AuthGuard]},
-  {path: 'survey/:id', component: SurveyComponent, canActivate: [AuthGuard]},
-  {path: 'client', component: ClientSurveyComponent},
+  {path: 'client/:id', component: ClientSurveyComponent},
+  {path: 'success', component: SuccessComponent},
   {path: '**', redirectTo: 'home'}
 ]
+
 
 @NgModule({
   declarations: [
@@ -43,8 +47,9 @@ const MY_ROUTS: Routes = [
     HomeComponent,
     AddsurveyComponent,
     ShowsurveysComponent,
-    SurveyComponent,
-    ClientSurveyComponent
+    ClientSurveyComponent,
+    KeysPipe,
+    SuccessComponent
   ],
   // to use Forms we must have FormsModule OR ReactiveFormsModule Here
   imports: [
@@ -54,7 +59,9 @@ const MY_ROUTS: Routes = [
     HttpClientModule,
     RouterModule.forRoot(MY_ROUTS),
     BrowserAnimationsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [AuthGuard,
     AuthserviceService,

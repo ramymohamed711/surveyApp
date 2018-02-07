@@ -1,18 +1,30 @@
 var express = require('express');
 var router = express.Router();
 const surveyService = require('../service/surveyService');
-"use strict";
 
 // get all the surveys
+router.get('/', (req, res, next) => {
+    surveyService.getAllSurveys(req)
+        .then(data => res.status(200).json({data: data}))
+        .catch(err => console.log(err));
+});
+
+// get survey by id
 router.get('/:id', (req, res, next) => {
     surveyService.getSurveyByID(req)
         .then(data => res.status(200).json({data: data}))
         .catch(err => console.log(err));
 });
 
+router.put('/submit', (req, res, next) =>{
+   surveyService.updateAnswers(req)
+       .then(data=> res.status(200).json({data:data}))
+       .catch(err => console.error(err));
+});
+
 router.put('/submitSurvey', (req, res, next) => {
     // surveyService.submitSurvey(req)
-    Promise.all([surveyService.updateAnswersCounters(req), surveyService.addSuggestedAnswer(req)])
+    Promise.all([surveyService.updateAnswers(req), surveyService.addSuggestedAnswer(req)])
         .then(data => res.status(200).json({data : data}))
         .catch(err => console.log(err));
 });
