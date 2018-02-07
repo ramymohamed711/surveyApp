@@ -2,7 +2,7 @@
       <div>
           <mat-icon (click)="allsurveys()">refresh</mat-icon>
 
-        <table id="customers">
+        <table class="customers">
           <thead>
               <th>
                   Survey title
@@ -22,7 +22,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let data of dataSource">
-              <td> {{data.survey_title}}</td>
+              <td> <a (click)="loadsurvey(data.survey_id)">
+                {{data.survey_title}}</a></td>
               <td> {{data.survey_statDate}}</td>
               <td> {{data.survey_endDate}}</td>
               <td> {{data.survey_status}}</td>
@@ -41,7 +42,22 @@
         </table> 
        
         </div>
-      
+
+      <div *ngIf="loadSurvey">
+        <table class="customers">
+          <tr *ngFor="let question of questions">
+            <td>{{question.question_title}}  </td>
+            
+                <ul>
+                    <li *ngFor="let ans of question.answers | keys; let j = index">
+                      {{ans}} -- {{question.answers[ans]['counter']}}
+                    </li>
+                  </ul>
+                
+              
+          </tr>
+        </table>
+      </div>
         
   </div>
   

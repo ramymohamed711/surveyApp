@@ -21,9 +21,9 @@ import {ShowsurveysComponent} from './showsurveys/showsurveys.component';
 import {AuthGuard} from './auth.guard'
 import {RedirectGuard} from './redirect.guard'
 
-import {KeysPipe} from './keys.pipe';
-import {ClientSurveyComponent} from "./client-survey/client-survey.component";
-import {SuccessComponent} from './success/success.component';
+ import {KeysPipe} from './keys.pipe';
+ import {ClientSurveyComponent} from "./client-survey/client-survey.component";
+ import {SuccessComponent} from './success/success.component';
 
 import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';

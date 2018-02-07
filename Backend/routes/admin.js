@@ -54,6 +54,14 @@ router.get('/check/:token', function (req, res) {
     res.status(403).json({ message: false })
 })
 
+//get the survey by ID
+router.get('/survey/:id', function (req, res) {
+  if (auth(req, res))
+  SurveService.getSurveyByID(req).then(data=>res.status(200).json(data))
+  else
+    res.status(403).json({ message: false })
+})
+
 
 router.post('/survey/create', function (req, res) {
   var survey;

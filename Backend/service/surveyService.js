@@ -30,6 +30,7 @@ function getSurveyByID(req) {
     // console.log(parseInt(req.params['id']));
     // console.log(id);
     return new Promise((resolve, reject) => {
+        console.log(req.params['id'])
         req.col.findOne({survey_id: parseInt(req.params['id'])}, (err, doc) => {
             if (err) reject(err);
             resolve(doc);
